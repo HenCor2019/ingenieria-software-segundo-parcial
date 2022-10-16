@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { isValidDui } from './validate-dui.helper';
 
-describe('duiValidator', () => {
+describe('isValidDui', () => {
   it('should return false if dui lenght !== 9', () => {
     expect(isValidDui('00000000')).toBe(false);
   });
@@ -12,6 +12,6 @@ describe('duiValidator', () => {
     expect(isValidDui('123456789')).toBe(false);
   });
   it('should return true on valid dui', () => {
-    expect(isValidDui('023827235')).toBe(true);
+    expect(isValidDui('12345675-0')).toBe(true);
   });
 });

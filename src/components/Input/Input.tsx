@@ -1,11 +1,20 @@
 import React from 'react';
+
+import { getColors } from '../../helpers';
 import { DuitInputType } from './Input.types';
 
-export function Input({ validateDuiInput, value, onInputChange }: DuitInputType) {
+export function Input({
+  validateDuiInput, value, onInputChange, isValid, message,
+}: DuitInputType) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateDuiInput(value);
   };
+
+  const {
+    border: borderColor,
+    message: messageColor,
+  } = getColors(isValid, message);
 
   return (
     <div className="relative bg-slate-300 w-full min-h-screen flex items-center justify-center flex-col">
@@ -15,18 +24,16 @@ export function Input({ validateDuiInput, value, onInputChange }: DuitInputType)
           className="flex flex-col gap-5 items-center"
           onSubmit={onSubmit}
         >
-          <input
-            placeholder="000000000"
-            className="rounded p-2 w-full"
-            value={value}
-            onChange={onInputChange}
-          />
-          <button
-            type="submit"
-            className="bg-blue-700 text-white w-auto py-2 px-3 rounded"
-          >
-            Validar
-          </button>
+          <div className="w-full mb-2">
+            <input
+              data-testid="dui-input"
+              placeholder="00000000-0"
+              className={`rounded p-2 w-full outline-none border-2 ${borderColor}`}
+              value={value}
+              onChange={onInputChange}
+            />
+            <p className={`text-start ${messageColor} pt-2 text-sm`}>{message}</p>
+          </div>
         </form>
       </div>
     </div>
