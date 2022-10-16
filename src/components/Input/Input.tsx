@@ -21,7 +21,12 @@ export default function Input({ validateDuiInput, value, onInputChange }: DuitIn
             value={value}
             onChange={onInputChange}
           />
-          <button className="bg-blue-700 text-white w-auto py-2 px-3 rounded">Validar</button>
+          <button
+            type="submit"
+            className="bg-blue-700 text-white w-auto py-2 px-3 rounded"
+          >
+            Validar
+          </button>
         </form>
       </div>
     </div>
