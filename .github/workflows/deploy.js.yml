@@ -1,33 +1,106 @@
 name: Deploy
 
 on:
+  push:
+    branches: ["develop"]
   pull_request:
     branches: [ "develop" ]
-    types:
-      - closed
+    types: ["opened","synchronize"]
 
 jobs:
-  build:
 
-    runs-on: ubuntu-latest
+  check_builds:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Cancel previous pipelines
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
 
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  lint:
+    runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+        node-version: '16.10.0'
+    - name: Install dependencies
+      run: npm ci
+    - name: Lint project
+      run: npm run lint
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        cache: 'npm'
+        node-version: '16.10.0'
+    - name: Install dependencies
+      run: npm ci
+    - name: Build project
+      run: npm run build
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist
+
+  test:
+    needs: [lint,build]
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        cache: 'npm'
+        node-version: '16.10.0'
+    - name: Install dependencies
+      run: npm ci
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist
+    - name: Tests
+      run: npm run test
+
+  deploy:
+    needs: [lint,build,test]
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v3
+      with:
+        cache: 'npm'
+        node-version: '16.10.0'
+    - name: Install dependencies
+      run: npm ci
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: dist
+        path: dist
+
     - name: Deploy Github Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ github.token }}
         publish_dir: ./dist

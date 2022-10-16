@@ -16,13 +16,15 @@
         },
         "ecmaVersion": 2021,
         "sourceType": "module",
-        "project": "./tsconfig.json"
+        "project": "./tsconfig.json",
+        "extraFileExtensions": [".css"]
     },
     "plugins": [
         "react",
         "@typescript-eslint"
     ],
     "rules": {
+       "import/prefer-default-export": "off"
     },
     "settings": {
       "import/resolver": {

@@ -1,6 +1,6 @@
 import { DUI_VALIDATOR_REGEX } from '../constants/validate-dui.constant';
 
-const isValidDui = (dui: string) => {
+export const isValidDui = (dui: string) => {
   const isValidSyntax = dui?.match(DUI_VALIDATOR_REGEX);
   if (!isValidSyntax) { return false; }
 
@@ -15,5 +15,3 @@ const isValidDui = (dui: string) => {
 
   return validator === 10 - mod;
 };
-
-export default isValidDui;

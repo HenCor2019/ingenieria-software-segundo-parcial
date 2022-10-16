@@ -1,7 +1,7 @@
 import React from 'react';
 import { DuitInputType } from './Input.types';
 
-export default function Input({ validateDuiInput, value, onInputChange }: DuitInputType) {
+export function Input({ validateDuiInput, value, onInputChange }: DuitInputType) {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     validateDuiInput(value);

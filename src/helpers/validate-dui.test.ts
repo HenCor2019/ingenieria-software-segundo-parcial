@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import isValidDui from './validate-dui.helper';
+import { isValidDui } from './validate-dui.helper';
 
 describe('duiValidator', () => {
   it('should return false if dui lenght !== 9', () => {

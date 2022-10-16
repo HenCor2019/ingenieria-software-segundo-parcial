@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import isValidDui from './helpers/validate-dui.helper';
-import Input from './components/Input/Input';
+import { Input } from './components/Input';
+import { isValidDui } from './helpers';
 
 function App() {
   const [value, setValue] = useState('');
