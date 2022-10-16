@@ -25,7 +25,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v2
       with:
         cache: 'npm'
         node-version: '16.10.0'
@@ -33,6 +33,7 @@ jobs:
       run: npm ci
     - name: Lint project
       run: npm run lint
+
   build:
     runs-on: ubuntu-18.04
 
